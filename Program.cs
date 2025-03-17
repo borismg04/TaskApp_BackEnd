@@ -15,6 +15,14 @@ builder.Services.AddHttpContextAccessor(); // Agrega esta línea
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 builder.Services.AddScoped<IAuthService>(provider =>
 {
     var context = provider.GetRequiredService<DBManagement>();
@@ -66,6 +74,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowOrigin");
 
 app.UseAuthorization();
 

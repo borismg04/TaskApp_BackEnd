@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Models.DTO;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -66,7 +67,7 @@ namespace Services
                     _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
                 }
 
-                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "RegisterUser", "RegisterUser", user.Email!, user);
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "RegisterUser", "RegisterUser", user.Email!, JsonConvert.SerializeObject(user));
 
                 _context.Users.Add(user);
                 _context.SaveChanges();

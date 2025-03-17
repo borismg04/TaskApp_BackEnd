@@ -1,6 +1,7 @@
 ﻿using Interfaces;
 using Models;
 using Models.DTO;
+using Newtonsoft.Json;
 using TaskAppBackEnd.Service;
 
 
@@ -32,14 +33,18 @@ namespace Services
             {
                 var token = _authService.Authenticate(email!, pass!);
 
-                if (token.result == null) return responseBadRequest();
+                if (token.result == null)
+                {
+                    ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetUsuarios", "GetUsuarios", email!, null!);
+                    return responseBadRequest();
+                }
 
                 if (_httpContextAccessor.HttpContext != null)
                 {
                     _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
                 }
 
-                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetUsuarios", "GetUsuarios", email!, pass!);
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetUsuarios", "GetUsuarios", email!, null!);
 
                 var users = _context.Users.ToList();
 
@@ -53,7 +58,7 @@ namespace Services
                     Profile = user.Profile
                 }).ToList();
 
-                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetUsuarios", time, email!, userDTOs.ToString()!);
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetUsuarios", time, email!, JsonConvert.SerializeObject(userDTOs));
 
                 return responseSuccess(userDTOs);
             }
@@ -77,7 +82,11 @@ namespace Services
 
                 ErrorService.PrintLogStartRequest(logID.ToString(), "UpdateUser", "UpdateUser", email!, pass!);
 
-                if (token.result == null) return responseBadRequest();
+                if (token.result == null)
+                {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateUser", time, email!, null!);
+                    return responseBadRequest();
+                }
 
                 if (_httpContextAccessor.HttpContext != null)
                 {
@@ -108,7 +117,7 @@ namespace Services
                     Profile = userToUpdate.Profile
                 };
 
-                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateUser", time, email!, userResponse.ToString()!);
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateUser", time, email!, JsonConvert.SerializeObject(userResponse));
 
                 return responseSuccess(userResponse);
             }
@@ -132,7 +141,11 @@ namespace Services
 
                 ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteUser", "DeleteUser", email!, pass!);
 
-                if (token.result == null) return responseBadRequest();
+                if (token.result == null)
+                {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteUser", time, email!, null!);
+                    return responseBadRequest();
+                }
 
                 if (_httpContextAccessor.HttpContext != null)
                 {

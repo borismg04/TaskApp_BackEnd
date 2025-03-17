@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using Models;
+using Newtonsoft.Json;
 using TaskAppBackEnd.Model;
 using TaskAppBackEnd.Service;
 
@@ -29,6 +30,8 @@ namespace Services
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
+                
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "CreateTask", "CreateTask", email!, JsonConvert.SerializeObject(model));
 
                 if (token.result == null) return responseBadRequest();
 
@@ -40,6 +43,8 @@ namespace Services
                 model.Fecha = DateTime.Now;
                 _context.Tasks.Add(model);
                 _context.SaveChanges();
+
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "CreateTask", time, email!, JsonConvert.SerializeObject(model));
 
                 return responseSuccess(model);
             }
@@ -61,7 +66,7 @@ namespace Services
             {
                 var token = _authService.Authenticate(email!, pass!);
 
-                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteTask", "DeleteTask", email!, pass!);
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteTask", "DeleteTask", email!, id!);
 
                 if (token.result == null) return responseBadRequest();
 
@@ -74,14 +79,14 @@ namespace Services
 
                 if (task == null)
                 {
-                    ErrorService.PrintError("Task not found", currentLogID.ToString(), email!, "DeleteTask", time);
+                    ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteTask", "DeleteTask", email!, id!);
                     return responseNoContent();
                 }
 
                 _context.Tasks.Remove(task);
                 _context.SaveChanges();
 
-                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteTask", time, email!, task.ToString()!);
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteTask", time, email!, JsonConvert.SerializeObject(task));
 
                 return responseSuccess(task);
             }
@@ -103,7 +108,7 @@ namespace Services
             {
                 var token = _authService.Authenticate(email!, pass!);
 
-                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetTask", "GetTask", email!, pass!);
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetTask", "GetTask", email!, null!);
 
                 if (token.result == null)
                 {
@@ -138,7 +143,7 @@ namespace Services
                     count = priorityCounts
                 };
 
-                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTask", time, email!, result.ToString()!);
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTask", time, email!, JsonConvert.SerializeObject(result));
                 return responseSuccess(result);
             }
             catch (Exception ex)
@@ -159,7 +164,7 @@ namespace Services
             {
                 var task = _context.Tasks.FirstOrDefault(x => x.Id == model.Id);
 
-                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "UpdateTask", "UpdateTask", email!, pass!);
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "UpdateTask", "UpdateTask", email!, JsonConvert.SerializeObject(model));
 
                 if (task == null)
                 {
@@ -175,7 +180,7 @@ namespace Services
 
                 _context.SaveChanges();
 
-                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateTask", time, email!, task.ToString()!);
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateTask", time, email!, JsonConvert.SerializeObject(model));
                 return responseSuccess(task);
             }
             catch (Exception ex)

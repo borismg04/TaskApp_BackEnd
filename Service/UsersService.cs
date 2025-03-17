@@ -94,6 +94,7 @@ namespace Services
 
                 userToUpdate.Nombre = user.Nombre;
                 userToUpdate.Email = user.Email;
+                userToUpdate.Password = user.Password;
                 userToUpdate.Profile = user.Profile;
 
                 _context.Users.Update(userToUpdate);

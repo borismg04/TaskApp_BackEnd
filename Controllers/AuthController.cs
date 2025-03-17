@@ -20,11 +20,14 @@ namespace TaskAppBackend.Controllers
         [HttpPost]
         public IActionResult Register(UserModel user)
         {
+            string email = Request.Headers["email"]!;
+            string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _authService.RegisterUser(user);
+            ReponseModel result = _authService.RegisterUser(email, pass, user);
             return StatusCode(result.statusCode, result);
         }
     }

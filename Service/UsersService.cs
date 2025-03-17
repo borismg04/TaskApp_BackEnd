@@ -12,7 +12,7 @@ namespace Services
         private readonly string _secretKey;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuthService _authService;
-
+        private static int logID = 0;
 
         public UsersService(DBManagement context, string secretKey, IHttpContextAccessor httpContextAccessor, IAuthService authService)
         {
@@ -26,6 +26,8 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
@@ -36,6 +38,8 @@ namespace Services
                 {
                     _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
                 }
+
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetUsuarios", "GetUsuarios", email!, pass!);
 
                 var users = _context.Users.ToList();
 
@@ -49,6 +53,8 @@ namespace Services
                     Profile = user.Profile
                 }).ToList();
 
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetUsuarios", time, email!, userDTOs.ToString()!);
+
                 return responseSuccess(userDTOs);
             }
             catch (Exception ex)
@@ -61,16 +67,15 @@ namespace Services
 
         public ReponseModel UpdateUser(string? email, string? pass, int id, UserModel user)
         {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
-            {
-                return responseRequired();
-            }
-
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
+
+                ErrorService.PrintLogStartRequest(logID.ToString(), "UpdateUser", "UpdateUser", email!, pass!);
 
                 if (token.result == null) return responseBadRequest();
 
@@ -83,6 +88,7 @@ namespace Services
 
                 if (userToUpdate == null)
                 {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateUser", time, email!, null!);
                     return responseNoContent();
                 }
 
@@ -101,6 +107,8 @@ namespace Services
                     Profile = userToUpdate.Profile
                 };
 
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateUser", time, email!, userResponse.ToString()!);
+
                 return responseSuccess(userResponse);
             }
             catch (Exception ex)
@@ -115,9 +123,13 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
+
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteUser", "DeleteUser", email!, pass!);
 
                 if (token.result == null) return responseBadRequest();
 
@@ -130,6 +142,7 @@ namespace Services
 
                 if (UserId == null)
                 {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteUser", time, email!, null!);
                     return responseNoContent();
                 }
 
@@ -144,6 +157,7 @@ namespace Services
                     Profile = UserId.Profile
                 };
 
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteUser", time, email!, userResponse.ToString()!);
                 return responseSuccess(userResponse);
             }
             catch (Exception ex)

@@ -6,7 +6,7 @@ namespace Interfaces
     public interface IAuthService
     {
         ReponseModel Authenticate(string email, string password);
-        ReponseModel RegisterUser(UserModel user);
+        ReponseModel RegisterUser(string email, string pass, UserModel user);
 
     }
 }

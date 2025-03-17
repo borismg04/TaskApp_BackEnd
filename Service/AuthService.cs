@@ -1,91 +1,84 @@
 ﻿using Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Models.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TaskAppBackEnd.Service;
 
 namespace Services
 {
-    public class AuthService : IAuthService
+    public class AuthService : ResponseService, IAuthService
     {
         private readonly DBManagement _context;
         private readonly string _secretKey;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private static int logID = 0;
 
-        public AuthService(DBManagement context, string secretKey)
+        public AuthService(DBManagement context, string secretKey, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _secretKey = secretKey;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public ReponseModel Authenticate(string email, string password)
         {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return responseRequired();
+            }
+
             try
             {
                 var user = _context.Users.FirstOrDefault(x => x.Email == email);
 
                 if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
-                    return new ReponseModel
-                    {
-                        message = "Invalid credentials",
-                        success = false,
-                        result = null,
-                        statusCode = 401
-                    };
+                    return responseRequired();
                 }
 
                 var token = GenerateJwtToken(user);
 
-                return new ReponseModel
-                {
-                    message = "Authentication successful",
-                    success = true,
-                    result = new { Token = token },
-                    statusCode = 200
-                };
+                return responseSuccess(user);
             }
             catch (Exception ex)
             {
                 var info = ErrorService.CatchService2("Authenticate", ex.Message, null, DateTime.Now);
-                return new ReponseModel
-                {
-                    message = "Authentication failed",
-                    success = false,
-                    result = info,
-                    statusCode = 500
-                };
+                return responseFailed(info);
             }
         }
 
-        public ReponseModel RegisterUser(UserModel user)
+        public ReponseModel RegisterUser(string email, string pass, UserModel user)
         {
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                var token = Authenticate(email!, pass!);
+
+                if (token.result == null) return responseBadRequest();
+
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
+                }
+
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "RegisterUser", "RegisterUser", user.Email!, user);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                return new ReponseModel
-                {
-                    message = "User registered",
-                    success = true,
-                    result = user,
-                    statusCode = 200
-                };
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "RegisterUser", DateTime.Now, user.Email!, "User registered successfully");
+
+                return responseSuccess(user);
             }
             catch (Exception ex)
             {
                 var info = ErrorService.CatchService2("RegisterUser", ex.Message, null, DateTime.Now);
-                return new ReponseModel
-                {
-                    message = "Registration failed",
-                    success = false,
-                    result = info,
-                    statusCode = 500
-                };
+                return responseFailed(info);
             }
         }
 

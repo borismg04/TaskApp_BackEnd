@@ -2,6 +2,8 @@ using Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Services;
+using TaskAppBackEnd.Interface;
+using TaskAppBackEnd.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,8 @@ builder.Services.AddScoped<IAuthService>(provider =>
     var context = provider.GetRequiredService<DBManagement>();
     var configuration = provider.GetRequiredService<IConfiguration>();
     var secretKey = configuration["JwtSettings:SecretKey"];
-    return new AuthService(context, secretKey!);
+    var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+    return new AuthService(context, secretKey!, httpContextAccessor);
 });
 
 builder.Services.AddScoped<IUsersService>(provider =>
@@ -41,6 +44,8 @@ builder.Services.AddScoped<ITaskService>(provider =>
     return new TaskService(context, secretKey!, httpContextAccessor, authService);
 });
 
+builder.Services.AddScoped<ILogin, LoginService>();
+
 builder.Services.AddDbContext<DBManagement>(options =>
     options.UseInMemoryDatabase("TaskAppDB"));
 
@@ -51,6 +56,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DBManagement>();
+    DBManagement.Seed(context);
 }
 
 app.UseHttpsRedirection();

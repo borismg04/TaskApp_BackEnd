@@ -23,15 +23,6 @@ namespace Services
             return errorModel;
         }
 
-        public static Object CatchService2Async(string searchId, string method, string usuario, string error, DateTime startTime)
-        {
-            ErrorModel errorModel = new ErrorModel();
-            errorModel.message = error;
-            errorModel.method = method;
-            PrintError(error, searchId, usuario, method, startTime);
-            return errorModel;
-        }
-
         public static void PrintError(string error, string searchId, string usuario, string method, DateTime startTime)
         {
             string timestamp = DateTime.UtcNow.ToString(DateTimeValue);

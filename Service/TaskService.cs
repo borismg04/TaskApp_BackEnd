@@ -1,17 +1,17 @@
 ﻿using Interfaces;
-using Microsoft.AspNetCore.Http;
 using Models;
 using TaskAppBackEnd.Model;
 using TaskAppBackEnd.Service;
 
 namespace Services
 {
-    public class TaskService : ResponseService , ITaskService
+    public class TaskService : ResponseService, ITaskService
     {
         private readonly DBManagement _context;
         private readonly string _secretKey;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuthService _authService;
+        private static int logID = 0;
 
         public TaskService(DBManagement context, string secretKey, IHttpContextAccessor httpContextAccessor, IAuthService authService)
         {
@@ -25,6 +25,7 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
@@ -54,9 +55,13 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
+
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "DeleteTask", "DeleteTask", email!, pass!);
 
                 if (token.result == null) return responseBadRequest();
 
@@ -67,10 +72,17 @@ namespace Services
 
                 var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
 
-                if (task == null) return responseNoContent();
+                if (task == null)
+                {
+                    ErrorService.PrintError("Task not found", currentLogID.ToString(), email!, "DeleteTask", time);
+                    return responseNoContent();
+                }
 
                 _context.Tasks.Remove(task);
                 _context.SaveChanges();
+
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "DeleteTask", time, email!, task.ToString()!);
+
                 return responseSuccess(task);
             }
             catch (Exception ex)
@@ -85,11 +97,19 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
 
-                if (token.result == null) return responseBadRequest();
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetTask", "GetTask", email!, pass!);
+
+                if (token.result == null)
+                {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTask", time, email!, "Token not found");
+                    return responseBadRequest();
+                }
 
                 if (_httpContextAccessor.HttpContext != null)
                 {
@@ -118,6 +138,7 @@ namespace Services
                     count = priorityCounts
                 };
 
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTask", time, email!, result.ToString()!);
                 return responseSuccess(result);
             }
             catch (Exception ex)
@@ -132,11 +153,20 @@ namespace Services
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
             try
             {
                 var task = _context.Tasks.FirstOrDefault(x => x.Id == model.Id);
 
-                if (task == null) return responseNoContent();
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "UpdateTask", "UpdateTask", email!, pass!);
+
+                if (task == null)
+                {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateTask", time, email!, "Task not found");
+                    return responseNoContent();
+                }
+
 
                 task.NameTask = model.NameTask;
                 task.Description = model.Description;
@@ -145,6 +175,7 @@ namespace Services
 
                 _context.SaveChanges();
 
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "UpdateTask", time, email!, task.ToString()!);
                 return responseSuccess(task);
             }
             catch (Exception ex)

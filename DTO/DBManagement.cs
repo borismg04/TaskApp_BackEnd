@@ -26,13 +26,14 @@ namespace Models
                 Nombre = "admin",
                 Email = "admin@ad.com",
                 Profile = "SurperAdmin",
-                Password = DecodeFromBase64("YWRtaW5pc3RyYXRvcg==") // Idealmente cifrada
+                Password = DecodeFromBase64("YWRtaW5pc3RyYXRvcg==")
 
             };
 
             context.Users.Add(user);
             context.SaveChanges();
         }
+
         public static string EncodeToBase64(string plainText)
         {
             var plainBytes = System.Text.Encoding.UTF8.GetBytes(plainText);

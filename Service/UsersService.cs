@@ -1,69 +1,45 @@
 ﻿using Interfaces;
-using Microsoft.AspNetCore.Http;
 using Models;
 using Models.DTO;
+using TaskAppBackEnd.Service;
+
 
 namespace Services
 {
-    public class UsersService : IUsersService
+    public class UsersService : ResponseService, IUsersService
     {
         private readonly DBManagement _context;
         private readonly string _secretKey;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly IAuthService _authService;
+        private readonly IAuthService _authService;
 
-        public UsersService(DBManagement context)
+
+        public UsersService(DBManagement context, string secretKey, IHttpContextAccessor httpContextAccessor, IAuthService authService)
         {
             _context = context;
-            //_secretKey = secretKey;
-            //_httpContextAccessor = httpContextAccessor;
-            //_authService = authService;
+            _secretKey = secretKey;
+            _httpContextAccessor = httpContextAccessor;
+            _authService = authService;
         }
 
         public ReponseModel GetUsuarios(string? email, string? pass)
         {
-            //if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
-            //{
-            //    return new ReponseModel
-            //    {
-            //        message = "Email and password are required.",
-            //        success = false,
-            //        result = null,
-            //        statusCode = 400
-            //    };
-            //}
-
             string error = string.Empty;
             DateTime time = DateTime.Now;
             try
             {
-                //var token = _authService.Authenticate(email!, pass!);
+                var token = _authService.Authenticate(email!, pass!);
 
-                //if (token.result == null)
-                //{
-                //    return new ReponseModel
-                //    {
-                //        message = "Undefined",
-                //        success = false,
-                //        result = null,
-                //        statusCode = 401
-                //    };
-                //}
+                if (token.result == null) return responseBadRequest();
 
-                //_httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", $"Bearer {token}");
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
+                }
 
                 var users = _context.Users.ToList();
 
-                if (users.Count == 0)
-                {
-                    return new ReponseModel
-                    {
-                        message = "No data found",
-                        success = true,
-                        result = new List<UserResponseDTO>(),
-                        statusCode = 201
-                    };
-                }
+                if (users.Count == 0) return responseNoContent();
 
                 var userDTOs = users.Select(user => new UserResponseDTO
                 {
@@ -73,71 +49,41 @@ namespace Services
                     Profile = user.Profile
                 }).ToList();
 
-                return new ReponseModel
-                {
-                    message = "Operation Success",
-                    success = true,
-                    result = userDTOs,
-                    statusCode = 200
-                };
+                return responseSuccess(userDTOs);
             }
             catch (Exception ex)
             {
                 error = "GetUsuarios: " + ex.Message;
                 var info = ErrorService.CatchService2("GetUsuarios", error, null, time);
-                return new ReponseModel
-                {
-                    message = "Operation Failed",
-                    success = false,
-                    result = info,
-                    statusCode = 500
-                };
+                return responseFailed(info);
             }
         }
 
         public ReponseModel UpdateUser(string? email, string? pass, int id, UserModel user)
         {
-            //if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
-            //{
-            //    return new ReponseModel
-            //    {
-            //        message = "Email and password are required.",
-            //        success = false,
-            //        result = null,
-            //        statusCode = 400
-            //    };
-            //}
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
+            {
+                return responseRequired();
+            }
 
             string error = string.Empty;
             DateTime time = DateTime.Now;
             try
             {
-                //var token = _authService.Authenticate(email!, pass!);
+                var token = _authService.Authenticate(email!, pass!);
 
-                //if (token.result == null)
-                //{
-                //    return new ReponseModel
-                //    {
-                //        message = "Undefined",
-                //        success = false,
-                //        result = null,
-                //        statusCode = 401
-                //    };
-                //}
+                if (token.result == null) return responseBadRequest();
 
-                //_httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", $"Bearer {token}");
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
+                }
 
                 var userToUpdate = _context.Users.FirstOrDefault(x => x.Id == user.Id);
 
                 if (userToUpdate == null)
                 {
-                    return new ReponseModel
-                    {
-                        message = "User not found",
-                        success = false,
-                        result = null,
-                        statusCode = 404
-                    };
+                    return responseNoContent();
                 }
 
                 userToUpdate.Nombre = user.Nombre;
@@ -155,76 +101,40 @@ namespace Services
                     Profile = userToUpdate.Profile
                 };
 
-                return new ReponseModel
-                {
-                    message = "User updated",
-                    success = true,
-                    result = userResponse,
-                    statusCode = 200
-                };
+                return responseSuccess(userResponse);
             }
             catch (Exception ex)
             {
                 error = "UpdateUser: " + ex.Message;
                 var info = ErrorService.CatchService2("UpdateUser", error, null, time);
-                return new ReponseModel
-                {
-                    message = "Operation Failed",
-                    success = false,
-                    result = info,
-                    statusCode = 500
-                };
+                return responseFailed(info);
             }
         }
 
         public ReponseModel DeleteUser(string? email, string? pass, int id)
         {
-            //if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
-            //{
-            //    return new ReponseModel
-            //    {
-            //        message = "Email and password are required.",
-            //        success = false,
-            //        result = null,
-            //        statusCode = 400
-            //    };
-            //}
             string error = string.Empty;
             DateTime time = DateTime.Now;
             try
             {
-                //var token = _authService.Authenticate(email, pass);
+                var token = _authService.Authenticate(email!, pass!);
 
-                //if (token.result == null)
-                //{
-                //    return new ReponseModel
-                //    {
-                //        message = "Undefined",
-                //        success = false,
-                //        result = null,
-                //        statusCode = 401
-                //    };
-                //}
+                if (token.result == null) return responseBadRequest();
 
-                //_httpContextAccessor.HttpContext.Response.Headers.Add("Authorization", $"Bearer {token}");
-
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
+                }
 
                 var UserId = _context.Users.Find(id);
 
                 if (UserId == null)
                 {
-                    return new ReponseModel
-                    {
-                        message = "User not found",
-                        success = false,
-                        result = null,
-                        statusCode = 201
-                    };
+                    return responseNoContent();
                 }
 
                 _context.Users.Remove(UserId);
                 _context.SaveChanges();
-
 
                 var userResponse = new UserResponseDTO
                 {
@@ -234,25 +144,13 @@ namespace Services
                     Profile = UserId.Profile
                 };
 
-                return new ReponseModel
-                {
-                    message = "User deleted",
-                    success = true,
-                    result = userResponse,
-                    statusCode = 200
-                };
+                return responseSuccess(userResponse);
             }
             catch (Exception ex)
             {
                 error = "DeleteUser: " + ex.Message;
                 var info = ErrorService.CatchService2("DeleteUser", error, null, time);
-                return new ReponseModel
-                {
-                    message = "Operation Failed",
-                    success = false,
-                    result = info,
-                    statusCode = 500
-                };
+                return responseFailed(info);
             }
         }
     }

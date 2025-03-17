@@ -1,27 +1,26 @@
 ﻿using Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using Models.DTO;
+using TaskAppBackEnd.Model;
 
 namespace TaskAppBackend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TaskController : ControllerBase
     {
+        private readonly ITaskService _taskService;
         private readonly DBManagement _context;
-        private readonly IUsersService _usersService;
 
-
-        public UsersController(DBManagement context, IUsersService usersService)
+        public TaskController(ITaskService taskService, DBManagement context)
         {
+            _taskService = taskService;
             _context = context;
-            _usersService = usersService;
         }
 
         [HttpGet]
-        [Route("GetUsuarios")]
-        public IActionResult GetUsuarios()
+        [Route("GetTasks")]
+        public IActionResult GetTasks()
         {
             string email = Request.Headers["email"]!;
             string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
@@ -31,38 +30,51 @@ namespace TaskAppBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            ReponseModel result = _usersService.GetUsuarios(email, pass);
+            ReponseModel result = _taskService.GetTask(email, pass);
             return StatusCode(result.statusCode, result);
         }
 
-        [Route("UpdateUser")]
+        [Route("CreateTask")]
         [HttpPost]
-        public IActionResult UpdateUser(int id, UserModel user)
+        public IActionResult CreateTask(TaskModel task)
         {
             string email = Request.Headers["email"]!;
             string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _usersService.UpdateUser(email, pass, id, user);
+            ReponseModel result = _taskService.CreateTask(email, pass, task);
             return StatusCode(result.statusCode, result);
         }
 
-        [Route("DeleteUser")]
+        [Route("UpdateTask")]
+        [HttpPost]
+        public IActionResult UpdateTask(TaskModel task)
+        {
+            string email = Request.Headers["email"]!;
+            string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            ReponseModel result = _taskService.UpdateTask(email, pass, task);
+            return StatusCode(result.statusCode, result);
+        }
+
+        [Route("DeleteTask")]
         [HttpDelete]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteTask(int id)
         {
             string email = Request.Headers["email"]!;
             string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _usersService.DeleteUser(email, pass, id);
+            ReponseModel result = _taskService.DeleteTask(email, pass, id);
             return StatusCode(result.statusCode, result);
         }
+
     }
 }

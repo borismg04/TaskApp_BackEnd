@@ -12,6 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IAuthService>(provider =>
+{
+    var context = provider.GetRequiredService<DBManagement>();
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var secretKey = configuration["JwtSettings:SecretKey"];
+    return new AuthService(context, secretKey);
+});
+
 builder.Services.AddDbContext<DBManagement>(options =>
     options.UseInMemoryDatabase("TaskAppDB"));
 

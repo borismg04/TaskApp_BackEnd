@@ -26,11 +26,11 @@ namespace TaskAppBackEnd.Service
             {
                 var user = _context.Users.FirstOrDefault(x => x.Email == email && x.Password == Password);
 
-                Password = BCrypt.Net.BCrypt.HashPassword(Password);
+                //Password = BCrypt.Net.BCrypt.HashPassword(Password);
 
-                user!.Password = Password;
+                //user!.Password = Password;
 
-                _context.SaveChanges();
+                //_context.SaveChanges();
 
                 ErrorService.PrintLogStartRequest(currentLogID.ToString(), "Authenticate", "Authenticate", email, null!);
 

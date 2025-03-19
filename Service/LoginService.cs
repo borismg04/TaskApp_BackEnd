@@ -31,11 +31,9 @@ namespace TaskAppBackEnd.Service
 
                 if (user == null) return responseBadRequest();
 
-                Password = BCrypt.Net.BCrypt.HashPassword(Password);
-
-                user!.Password = Password;
-
-                _context.SaveChanges();
+                //Password = BCrypt.Net.BCrypt.HashPassword(Password);
+                //user!.Password = Password;
+                //_context.SaveChanges();
 
                 var userDTO = new UserResponseDTO
                 {

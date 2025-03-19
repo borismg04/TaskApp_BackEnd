@@ -32,7 +32,6 @@ namespace TaskAppBackEnd.Service
 
                 _context.SaveChanges();
 
-
                 ErrorService.PrintLogStartRequest(currentLogID.ToString(), "Authenticate", "Authenticate", email, null!);
 
                 if (user == null) return responseBadRequest();

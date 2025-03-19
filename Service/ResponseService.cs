@@ -57,7 +57,7 @@ namespace TaskAppBackEnd.Service
                 message = "Email and password are required.",
                 success = false,
                 result = null,
-                statusCode = 400
+                statusCode = 403
             };
 
         }

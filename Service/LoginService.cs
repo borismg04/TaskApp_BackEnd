@@ -14,7 +14,6 @@ namespace TaskAppBackEnd.Service
         public LoginService(DBManagement context)
         {
             _context = context;
-
         }
 
         public ReponseModel Authenticate(string email, string Password)
@@ -26,6 +25,13 @@ namespace TaskAppBackEnd.Service
             try
             {
                 var user = _context.Users.FirstOrDefault(x => x.Email == email && x.Password == Password);
+                
+                Password = BCrypt.Net.BCrypt.HashPassword(Password);
+
+                user!.Password = Password;
+
+                _context.SaveChanges();
+
 
                 ErrorService.PrintLogStartRequest(currentLogID.ToString(), "Authenticate", "Authenticate", email, null!);
 

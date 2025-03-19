@@ -121,8 +121,11 @@ namespace Services
                     _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
                 }
 
-                var pendingTasks = _context.Tasks.
-                    Where(x => x.State == "Pendiente").ToList();
+                var state = new List<string> { "Gestionado", "Pendiente", "En proceso" };
+                var pendingTasks = _context.Tasks
+                    .Where(x => state.Contains(x.State!))
+                    .ToList();
+
 
                 var priorityCounts = new
                 {

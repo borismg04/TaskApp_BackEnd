@@ -25,7 +25,7 @@ namespace TaskAppBackEnd.Service
             try
             {
                 var user = _context.Users.FirstOrDefault(x => x.Email == email && x.Password == Password);
-                
+
                 Password = BCrypt.Net.BCrypt.HashPassword(Password);
 
                 user!.Password = Password;

@@ -30,7 +30,7 @@ namespace Services
             try
             {
                 var token = _authService.Authenticate(email!, pass!);
-                
+
                 ErrorService.PrintLogStartRequest(currentLogID.ToString(), "CreateTask", "CreateTask", email!, JsonConvert.SerializeObject(model));
 
                 if (token.result == null) return responseBadRequest();

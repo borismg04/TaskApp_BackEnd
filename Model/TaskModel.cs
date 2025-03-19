@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace TaskAppBackEnd.Model
+﻿namespace TaskAppBackEnd.Model
 {
     public class TaskModel
     {

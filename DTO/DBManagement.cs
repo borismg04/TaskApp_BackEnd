@@ -25,9 +25,8 @@ namespace Models
             {
                 Nombre = "admin",
                 Email = "admin@ad.com",
-                Profile = "SurperAdmin",
+                Profile = "SuperAdmin",
                 Password = DecodeFromBase64("YWRtaW5pc3RyYXRvcg==")
-
             };
 
             context.Users.Add(user);

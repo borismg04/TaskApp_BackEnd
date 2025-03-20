@@ -28,6 +28,9 @@ El proyecto está organizado en las siguientes carpetas y archivos:
 Nota : En el proyecto hay un documento donde estan todas las colecciones de postman para probar los endpoints.
 Nombre : TaskApp.postman_collection.json para descargar.
 
+![image](https://github.com/user-attachments/assets/04095ab1-1223-46e2-940e-cb4afab9a8bf)
+
+
 ## Instalación
 
 1. Clona el repositorio:
@@ -173,35 +176,7 @@ El `UsersController` es responsable de manejar las solicitudes HTTP relacionadas
         - `id` (query): ID del usuario a eliminar.
     - **Respuesta**: `ReponseModel` con el resultado de la eliminación.
 
-## Ejemplo de Uso
 
 ## Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

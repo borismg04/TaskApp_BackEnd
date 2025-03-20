@@ -1,0 +1,878 @@
+{
+	"info": {
+		"_postman_id": "14c9200f-9eea-47e8-a173-91140b1ca9f4",
+		"name": "TaskApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28758964",
+		"_collection_link": "https://interstellar-station-536032.postman.co/workspace/DMT_3.0~2e80e4fc-0cbb-447c-9347-6896f38b1cda/collection/28758964-14c9200f-9eea-47e8-a173-91140b1ca9f4?action=share&source=collection_link&creator=28758964"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "Users Local",
+					"item": [
+						{
+							"name": "Login User",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7121/Login/login?email=admin@ad.com&pass=administrator",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Login",
+										"login"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "admin@ad.com"
+										},
+										{
+											"key": "pass",
+											"value": "administrator"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AuthUsers",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"boris.com\",\r\n  \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7117/Users/Authenticate",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7117",
+									"path": [
+										"Users",
+										"Authenticate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:7121/Users/GetUsuarios",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Users",
+										"GetUsuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RegisterUser",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "admin@ad.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "administrator",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"boris monroy\",\r\n  \"email\": \"boris.com\",\r\n  \"password\": \"123456\",\r\n  \"profile\": \"User\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7121/Auth/Register",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Auth",
+										"Register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateUser",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"borisMG\",\r\n    \"email\": \"boris.com\",\r\n    \"password\": \"12345\",\r\n    \"profile\": \"Admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7121/Users/UpdateUser",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Users",
+										"UpdateUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"borisMG\",\r\n    \"email\": \"boris.com\",\r\n    \"password\": \"$2a$11$V8k81dtdznfp0WuT7UThuOIdpirWs8KMsNOLT/p1NUT4/C1XkWAOS\",\r\n    \"profile\": \"Admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7121/Users/DeleteUser?id=2",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Users",
+										"DeleteUser"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Taks Local",
+					"item": [
+						{
+							"name": "CreateTask",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "admin@ad.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "administrator",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nameTask\": \"tarea 1\",\r\n  \"description\": \"esto es una tarea\",\r\n  \"userGestion\": \"borismg\",\r\n  \"priority\": \"Alta\",\r\n  \"state\": \"En proceso\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7121/Task/CreateTask",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Task",
+										"CreateTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetTask",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:7121/Task/GetTasks",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Task",
+										"GetTasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetTaskAdmin",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "admin@ad.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "administrator",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:7121/Task/GetTaskAdmin",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Task",
+										"GetTaskAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateTask",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 4,\r\n    \"nameTask\": \"tarea 1\",\r\n    \"description\": \"esto es una tarea update\",\r\n    \"userGestion\": \"borismg\",\r\n    \"priority\": \"Baja\",\r\n    \"state\": \"Pendiente\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7121/Task/UpdateTask",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Task",
+										"UpdateTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:7121/Task/DeleteTask?id=1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7121",
+									"path": [
+										"Task",
+										"DeleteTask"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Prod",
+			"item": [
+				{
+					"name": "Users Prod",
+					"item": [
+						{
+							"name": "Login User",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Login/login?email=admin@ad.com&pass=administrator",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Login",
+										"login"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "admin@ad.com"
+										},
+										{
+											"key": "pass",
+											"value": "administrator"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RegisterUser Prod",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "admin@ad.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "administrator",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"boris monroy\",\r\n  \"email\": \"boris.com\",\r\n  \"password\": \"123456\",\r\n  \"profile\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Auth/Register",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Auth",
+										"Register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsers Prod",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Users/GetUsuarios",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Users",
+										"GetUsuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateUser Prod",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"borisMG\",\r\n    \"email\": \"boris.com\",\r\n    \"password\": \"12345\",\r\n    \"profile\": \"Admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Users/UpdateUser",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Users",
+										"UpdateUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser Prod",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"nombre\": \"borisMG\",\r\n    \"email\": \"boris.com\",\r\n    \"password\": \"$2a$11$V8k81dtdznfp0WuT7UThuOIdpirWs8KMsNOLT/p1NUT4/C1XkWAOS\",\r\n    \"profile\": \"Admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Users/DeleteUser?id=3",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Users",
+										"DeleteUser"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Task Prod",
+					"item": [
+						{
+							"name": "GetTaskAdmin Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "admin@ad.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "administrator",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Task/GetTaskAdmin",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Task",
+										"GetTaskAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateTask Prod",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nameTask\": \"tarea 1\",\r\n  \"description\": \"esto es una tarea\",\r\n  \"userGestion\": \"borismg\",\r\n  \"priority\": \"Alta\",\r\n  \"state\": \"Pendiente\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Task/CreateTask",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Task",
+										"CreateTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetTask Prod",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Task/GetTasks",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Task",
+										"GetTasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateTask Prod",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"nameTask\": \"tarea 1\",\r\n    \"description\": \"esto es una tarea update\",\r\n    \"userGestion\": \"borismg\",\r\n    \"priority\": \"Baja\",\r\n    \"state\": \"Pendiente\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Task/UpdateTask",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Task",
+										"UpdateTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User Prod",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "boris.com",
+										"type": "text"
+									},
+									{
+										"key": "pass",
+										"value": "123456",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://taskappbackend-4929b0971b62.herokuapp.com/Task/DeleteTask?id=1",
+									"protocol": "https",
+									"host": [
+										"taskappbackend-4929b0971b62",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Task",
+										"DeleteTask"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

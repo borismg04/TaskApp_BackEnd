@@ -1,107 +1,207 @@
-## Super Admin: 
+# TaskAppBackEnd
 
-	- email: admin@ad.com
-	- password: admnistrator
+Este proyecto ha sido desplegado en producción en Heroku. Puedes acceder al servicio en el siguiente enlace:
+[https://taskappbackend-4929b0971b62.herokuapp.com/](https://localhost:7121/)
 
+- email: admin@ad.com
+- password: admnistrator
 
-El proyecto *TaskApp_BackEnd* es una aplicación de gestión de tareas desarrollada con Node.js y Express. Proporciona una API RESTful para manejar tareas, usuarios y autenticación.
+## Descripción
+
+TaskAppBackEnd es un servicio backend para la gestión de tareas y autenticación de usuarios. Este proyecto está desarrollado en C# utilizando .NET 8 y Entity Framework Core para la gestión de la base de datos.
 
 ## Características
 
-- *Gestión de tareas*: creación, lectura, actualización y eliminación de tareas.
-- *Gestión de usuarios*: registro, inicio de sesión y perfiles de usuario.
-- *Autenticación*: manejo de tokens JWT para la autenticación de usuarios.
+- Autenticación de usuarios
+- Gestión de tareas
+- Registro de errores y logs
 
-## Requisitos previos
+## Estructura del Proyecto
 
-- Node.js (versión 14 o superior)
-- npm (versión 6 o superior)
-- MongoDB (versión 4 o superior)
+El proyecto está organizado en las siguientes carpetas y archivos:
+
+1. **Models**: Contiene las clases de modelo para los usuarios y las tareas.
+2. **Services**: Contiene los servicios para la autenticación y la gestión de respuestas.
+3. **Interfaces**: Contiene las interfaces que definen los contratos para los servicios.
+4. **Controllers**: Contiene los controladores para manejar las solicitudes HTTP.
+
+Nota : En el proyecto hay un documento donde estan todas las colecciones de postman para probar los endpoints.
+Nombre : TaskApp.postman_collection.json para descargar.
 
 ## Instalación
 
 1. Clona el repositorio:
 
-   bash
    git clone https://github.com/borismg04/TaskApp_BackEnd.git
 
 2. Navega al directorio del proyecto:
-   bash
+
    cd TaskApp_BackEnd
-
-3. Instala las dependencias:
-
-   bash
-   npm install
-
-## Configuración
-
-1. Crea un archivo .env en la raíz del proyecto con las siguientes variables de entorno:
-
-   env
-   PORT=3000
-   MONGODB_URL=mongodb://localhost:27017/taskapp
-   JWT_SECRET=tu_secreto_jwt
    
-   - PORT: Puerto en el que se ejecutará la aplicación.
-   - MONGODB_URL: URL de conexión a la base de datos MongoDB.
-   - JWT_SECRET: Clave secreta para la firma de tokens JWT.
+3. Restaura los paquetes NuGet:
+   
+4. Configura la cadena de conexión a la base de datos en el archivo `appsettings.json`.
+
+5. Aplica las migraciones a la base de datos:
+
+   dotnet ef database update
+
 
 ## Uso
 
-1. Inicia el servidor:
+Para ejecutar el proyecto, utiliza el siguiente comando:
 
-   bash
-   npm start
+dotnet run
 
-2. La API estará disponible en http://localhost:3000.
 
-## Endpoints principales
+El servicio estará disponible en `http://localhost:5000`.
 
-- *Usuarios*:
-  - POST /users: Registrar un nuevo usuario.
-  - POST /users/login: Iniciar sesión de un usuario.
-  - GET /users/me: Obtener el perfil del usuario autenticado.
-  - POST /users/logout: Cerrar sesión del usuario autenticado.
+## Endpoints
 
-- *Tareas*:
-  - POST /tasks: Crear una nueva tarea.
-  - GET /tasks: Obtener todas las tareas del usuario autenticado.
-  - GET /tasks/:id: Obtener una tarea por su ID.
-  - PATCH /tasks/:id: Actualizar una tarea por su ID.
-  - DELETE /tasks/:id: Eliminar una tarea por su ID.
+### 1. Autenticación
 
-## Dependencias principales
+- **POST /api/login**
+    - **Descripción**: Autentica a un usuario.
+    - **Parámetros**:
+        - `email`: Correo electrónico del usuario.
+        - `password`: Contraseña del usuario.
+    - **Respuesta**: `ReponseModel` con la información del usuario autenticado.
 
-- *express*: Framework web para Node.js.
-- *mongoose*: ODM para MongoDB y Node.js.
-- *jsonwebtoken*: Implementación de JSON Web Tokens.
-- *bcryptjs*: Biblioteca para hashing de contraseñas.
-- *dotenv*: Carga variables de entorno desde un archivo .env.
+### 2. Tareas
 
-## Desarrollo
+- **GET /api/tasks**
+    - **Descripción**: Obtiene todas las tareas.
+    - **Respuesta**: Lista de `TaskModel`.
 
-Para iniciar el servidor en modo de desarrollo con recarga automática:
+- **POST /api/tasks**
+    - **Descripción**: Crea una nueva tarea.
+    - **Parámetros**: `TaskModel` con la información de la tarea.
+    - **Respuesta**: `ReponseModel` con la tarea creada.
 
-bash
-npm run dev
+## Controladores
 
-Este comando utiliza *nodemon* para reiniciar el servidor automáticamente cuando se detectan cambios en el código.
+### 1. LoginController
 
-## Contribuciones
+#### Descripción
 
-Las contribuciones son bienvenidas. Por favor, sigue los siguientes pasos:
+El `LoginController` es responsable de manejar las solicitudes HTTP relacionadas con la autenticación de usuarios. Proporciona un endpoint para autenticar a los usuarios.
 
-1. Haz un fork del repositorio.
-2. Crea una nueva rama: git checkout -b feature/nueva-funcionalidad.
-3. Realiza tus cambios y haz commits: git commit -m 'Añadir nueva funcionalidad'.
-4. Envía tus cambios al repositorio remoto: git push origin feature/nueva-funcionalidad.
-5. Abre un Pull Request en GitHub.
+#### Endpoints
+
+- **Endpoint**: `GET /LoginController/login`
+    - **Descripción**: Autentica a un usuario.
+    - **Parámetros**:
+        - `email` (query): Correo electrónico del usuario.
+        - `pass` (query): Contraseña del usuario.
+    - **Respuesta**: `ReponseModel` con la información del usuario autenticado.
+
+### 2. TaskController
+
+#### Descripción
+
+El `TaskController` es responsable de manejar las solicitudes HTTP relacionadas con la gestión de tareas. Proporciona endpoints para obtener, crear, actualizar y eliminar tareas.
+
+#### Endpoints
+
+- **Endpoint**: `GET /TaskController/GetTasks`
+    - **Descripción**: Obtiene todas las tareas.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+    - **Respuesta**: `ReponseModel` con la lista de tareas.
+
+- **Endpoint**: `GET /TaskController/GetTaskAdmin`
+    - **Descripción**: Obtiene todas las tareas para el administrador.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+    - **Respuesta**: `ReponseModel` con la lista de tareas para el administrador.
+
+- **Endpoint**: `POST /TaskController/CreateTask`
+    - **Descripción**: Crea una nueva tarea.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+        - `task` (body): Modelo de la tarea a crear.
+    - **Respuesta**: `ReponseModel` con la tarea creada.
+
+- **Endpoint**: `POST /TaskController/UpdateTask`
+    - **Descripción**: Actualiza una tarea existente.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+        - `task` (body): Modelo de la tarea a actualizar.
+    - **Respuesta**: `ReponseModel` con la tarea actualizada.
+
+- **Endpoint**: `DELETE /TaskController/DeleteTask`
+    - **Descripción**: Elimina una tarea existente.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+        - `id` (query): ID de la tarea a eliminar.
+    - **Respuesta**: `ReponseModel` con el resultado de la eliminación.
+
+### 3. UsersController
+
+#### Descripción
+
+El `UsersController` es responsable de manejar las solicitudes HTTP relacionadas con la gestión de usuarios. Proporciona endpoints para obtener, actualizar y eliminar usuarios.
+
+#### Endpoints
+
+- **Endpoint**: `GET /UsersController/GetUsuarios`
+    - **Descripción**: Obtiene todos los usuarios.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+    - **Respuesta**: `ReponseModel` con la lista de usuarios.
+
+- **Endpoint**: `POST /UsersController/UpdateUser`
+    - **Descripción**: Actualiza un usuario existente.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+        - `id` (query): ID del usuario a actualizar.
+        - `user` (body): Modelo del usuario a actualizar.
+    - **Respuesta**: `ReponseModel` con el usuario actualizado.
+
+- **Endpoint**: `DELETE /UsersController/DeleteUser`
+    - **Descripción**: Elimina un usuario existente.
+    - **Parámetros**:
+        - `email` (header): Correo electrónico del usuario.
+        - `pass` (header): Contraseña del usuario (opcional).
+        - `id` (query): ID del usuario a eliminar.
+    - **Respuesta**: `ReponseModel` con el resultado de la eliminación.
+
+## Ejemplo de Uso
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
 
----
 
-Este archivo README.md proporciona una visión general del proyecto *TaskApp_BackEnd*, incluyendo su instalación, configuración y uso. Para más detalles, consulta la documentación del código fuente y los comentarios en el mismo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,5 +9,6 @@ namespace Interfaces
         ReponseModel DeleteTask(string? email, string? pass, int id);
         ReponseModel GetTask(string? email, string? pass);
         ReponseModel UpdateTask(string? email, string? pass, TaskModel model);
+        ReponseModel GetTaskAdmin(string? email, string? pass);
     }
 }

@@ -34,6 +34,20 @@ namespace TaskAppBackend.Controllers
             return StatusCode(result.statusCode, result);
         }
 
+        [HttpGet]
+        [Route("GetTaskAdmin")]
+        public IActionResult GetTaskAdmin()
+        {
+            string email = Request.Headers["email"]!;
+            string pass = String.IsNullOrEmpty(Request.Headers["pass"]) ? "No aplica" : Request.Headers["pass"]!;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            ReponseModel result = _taskService.GetTaskAdmin(email, pass);
+            return StatusCode(result.statusCode, result);
+        }
+
         [Route("CreateTask")]
         [HttpPost]
         public IActionResult CreateTask(TaskModel task)

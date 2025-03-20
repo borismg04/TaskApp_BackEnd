@@ -98,6 +98,46 @@ namespace Services
             }
         }
 
+        public ReponseModel GetTaskAdmin(string? email, string? pass)
+        {
+            string error = string.Empty;
+            DateTime time = DateTime.Now;
+            int currentLogID = Interlocked.Increment(ref logID);
+
+            try
+            {
+                var token = _authService.Authenticate(email!, pass!);
+
+                ErrorService.PrintLogStartRequest(currentLogID.ToString(), "GetTaskAdmin", "GetTaskAdmin", email!, null!);
+
+                if (token.result == null)
+                {
+                    ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTaskAdmin", time, email!, "Token not found");
+                    return responseBadRequest();
+                }
+
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    _httpContextAccessor.HttpContext.Response.Headers.Append("Authorization", $"Bearer {token}");
+                }
+
+                var state = new List<string> { "Gestionado", "Pendiente", "En proceso" };
+                var AllTasks = _context.Tasks
+                    .Where(x => state.Contains(x.State!))
+                    .ToList();
+
+
+                ErrorService.PrintLogEndRequest(currentLogID.ToString(), "GetTaskAdmin", time, email!, JsonConvert.SerializeObject(AllTasks));
+                return responseSuccess(AllTasks);
+            }
+            catch (Exception ex)
+            {
+                error = "GetTaskAdmin: " + ex.Message;
+                var info = ErrorService.CatchService2("GetTaskAdmin", error, null, time);
+                return responseFailed(info);
+            }
+        }
+
         public ReponseModel GetTask(string? email, string? pass)
         {
             string error = string.Empty;

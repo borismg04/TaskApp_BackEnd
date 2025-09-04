@@ -31,12 +31,12 @@ namespace TaskAppBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            ReponseModel result = _usersService.GetUsuarios(email, pass);
+            ResponseModel result = _usersService.GetUsuarios(email, pass);
             return StatusCode(result.statusCode, result);
         }
 
         [Route("UpdateUser")]
-        [HttpPost]
+        [HttpPut]
         public IActionResult UpdateUser(int id, UserModel user)
         {
             string email = Request.Headers["email"]!;
@@ -46,7 +46,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _usersService.UpdateUser(email, pass, id, user);
+            ResponseModel result = _usersService.UpdateUser(email, pass, id, user);
             return StatusCode(result.statusCode, result);
         }
 
@@ -61,7 +61,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _usersService.DeleteUser(email, pass, id);
+            ResponseModel result = _usersService.DeleteUser(email, pass, id);
             return StatusCode(result.statusCode, result);
         }
     }

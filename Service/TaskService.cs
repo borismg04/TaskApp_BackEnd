@@ -22,7 +22,7 @@ namespace Services
             _authService = authService;
         }
 
-        public ReponseModel CreateTask(string? email, string? pass, TaskModel model)
+        public ResponseModel CreateTask(string? email, string? pass, TaskModel model)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -56,7 +56,7 @@ namespace Services
             }
         }
 
-        public ReponseModel DeleteTask(string? email, string? pass, int id)
+        public ResponseModel DeleteTask(string? email, string? pass, int id)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -98,7 +98,7 @@ namespace Services
             }
         }
 
-        public ReponseModel GetTaskAdmin(string? email, string? pass)
+        public ResponseModel GetTaskAdmin(string? email, string? pass)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -138,7 +138,7 @@ namespace Services
             }
         }
 
-        public ReponseModel GetTask(string? email, string? pass)
+        public ResponseModel GetTask(string? email, string? pass)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -196,7 +196,7 @@ namespace Services
             }
         }
 
-        public ReponseModel UpdateTask(string? email, string? pass, TaskModel model)
+        public ResponseModel UpdateTask(string? email, string? pass, TaskModel model)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;

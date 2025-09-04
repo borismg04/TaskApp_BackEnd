@@ -23,7 +23,7 @@ namespace Services
             _authService = authService;
         }
 
-        public ReponseModel GetUsuarios(string? email, string? pass)
+        public ResponseModel GetUsuarios(string? email, string? pass)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -70,7 +70,7 @@ namespace Services
             }
         }
 
-        public ReponseModel UpdateUser(string? email, string? pass, int id, UserModel user)
+        public ResponseModel UpdateUser(string? email, string? pass, int id, UserModel user)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;
@@ -129,7 +129,7 @@ namespace Services
             }
         }
 
-        public ReponseModel DeleteUser(string? email, string? pass, int id)
+        public ResponseModel DeleteUser(string? email, string? pass, int id)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;

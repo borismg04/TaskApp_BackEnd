@@ -5,10 +5,10 @@ namespace Interfaces
 {
     public interface ITaskService
     {
-        ReponseModel CreateTask(string? email, string? pass, TaskModel model);
-        ReponseModel DeleteTask(string? email, string? pass, int id);
-        ReponseModel GetTask(string? email, string? pass);
-        ReponseModel UpdateTask(string? email, string? pass, TaskModel model);
-        ReponseModel GetTaskAdmin(string? email, string? pass);
+        ResponseModel CreateTask(string? email, string? pass, TaskModel model);
+        ResponseModel DeleteTask(string? email, string? pass, int id);
+        ResponseModel GetTask(string? email, string? pass);
+        ResponseModel UpdateTask(string? email, string? pass, TaskModel model);
+        ResponseModel GetTaskAdmin(string? email, string? pass);
     }
 }

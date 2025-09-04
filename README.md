@@ -4,7 +4,7 @@ Este proyecto ha sido desplegado en producción en Heroku. Puedes acceder al ser
 [https://taskappbackend-4929b0971b62.herokuapp.com/](https://localhost:7121/)
 
 - email: admin@ad.com
-- password: admnistrator
+- password: administrator
 
 ## Descripción
 
@@ -12,9 +12,33 @@ TaskAppBackEnd es un servicio backend para la gestión de tareas y autenticació
 
 ## Características
 
-- Autenticación de usuarios
-- Gestión de tareas
+- Autenticación de usuarios con JWT
+- Gestión de tareas con validación
 - Registro de errores y logs
+- Middleware de manejo global de excepciones
+- Validación de modelos
+- Health checks
+- Configuración segura de CORS
+
+## Mejoras Recientes
+
+### Seguridad
+- ✅ Configuración JWT mejorada con variables de entorno
+- ✅ Política CORS más restrictiva y configurable
+- ✅ Middleware de autenticación JWT implementado
+- ✅ Hash de contraseñas con BCrypt (reemplazando Base64)
+
+### Calidad de Código
+- ✅ Corregido typo: `ReponseModel` → `ResponseModel`
+- ✅ Validación de modelos con Data Annotations
+- ✅ Métodos HTTP correctos (PUT para actualizaciones)
+- ✅ Middleware global de manejo de excepciones
+
+### Arquitectura
+- ✅ Health checks endpoint (`/health`)
+- ✅ Configuración mejorada de dependencias
+- ✅ Eliminación de archivos no utilizados
+- ✅ Estructura de directorios mejorada
 
 ## Estructura del Proyecto
 
@@ -24,8 +48,9 @@ El proyecto está organizado en las siguientes carpetas y archivos:
 2. **Services**: Contiene los servicios para la autenticación y la gestión de respuestas.
 3. **Interfaces**: Contiene las interfaces que definen los contratos para los servicios.
 4. **Controllers**: Contiene los controladores para manejar las solicitudes HTTP.
+5. **Middleware**: Contiene middleware personalizado para manejo de excepciones.
 
-Nota : En el proyecto hay un documento donde estan todas las colecciones de postman para probar los endpoints.
+Nota : En el proyecto hay un documento donde están todas las colecciones de postman para probar los endpoints.
 Nombre : TaskApp.postman_collection.json para descargar.
 
 ![image](https://github.com/user-attachments/assets/04095ab1-1223-46e2-940e-cb4afab9a8bf)

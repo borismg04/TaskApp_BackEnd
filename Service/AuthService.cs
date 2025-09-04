@@ -24,7 +24,7 @@ namespace Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public ReponseModel Authenticate(string email, string password)
+        public ResponseModel Authenticate(string email, string password)
         {
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
@@ -51,7 +51,7 @@ namespace Services
             }
         }
 
-        public ReponseModel RegisterUser(string email, string pass, UserModel user)
+        public ResponseModel RegisterUser(string email, string pass, UserModel user)
         {
             int currentLogID = Interlocked.Increment(ref logID);
 

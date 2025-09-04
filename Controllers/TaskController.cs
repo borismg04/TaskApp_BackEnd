@@ -30,7 +30,7 @@ namespace TaskAppBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            ReponseModel result = _taskService.GetTask(email, pass);
+            ResponseModel result = _taskService.GetTask(email, pass);
             return StatusCode(result.statusCode, result);
         }
 
@@ -44,7 +44,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _taskService.GetTaskAdmin(email, pass);
+            ResponseModel result = _taskService.GetTaskAdmin(email, pass);
             return StatusCode(result.statusCode, result);
         }
 
@@ -58,12 +58,12 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _taskService.CreateTask(email, pass, task);
+            ResponseModel result = _taskService.CreateTask(email, pass, task);
             return StatusCode(result.statusCode, result);
         }
 
         [Route("UpdateTask")]
-        [HttpPost]
+        [HttpPut]
         public IActionResult UpdateTask(TaskModel task)
         {
             string email = Request.Headers["email"]!;
@@ -72,7 +72,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _taskService.UpdateTask(email, pass, task);
+            ResponseModel result = _taskService.UpdateTask(email, pass, task);
             return StatusCode(result.statusCode, result);
         }
 
@@ -86,7 +86,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _taskService.DeleteTask(email, pass, id);
+            ResponseModel result = _taskService.DeleteTask(email, pass, id);
             return StatusCode(result.statusCode, result);
         }
 

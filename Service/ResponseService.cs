@@ -5,9 +5,9 @@ namespace TaskAppBackEnd.Service
     public class ResponseService
     {
         //200
-        public ReponseModel responseSuccess(object value)
+        public ResponseModel responseSuccess(object value)
         {
-            return new ReponseModel
+            return new ResponseModel
             {
                 message = "Operation Success",
                 success = true,
@@ -16,9 +16,9 @@ namespace TaskAppBackEnd.Service
             };
         }
 
-        public ReponseModel responseNoContent()
+        public ResponseModel responseNoContent()
         {
-            return new ReponseModel
+            return new ResponseModel
             {
                 message = "Data No Content",
                 success = true,
@@ -27,9 +27,9 @@ namespace TaskAppBackEnd.Service
             };
         }
         //500
-        public ReponseModel responseFailed(object value)
+        public ResponseModel responseFailed(object value)
         {
-            return new ReponseModel
+            return new ResponseModel
             {
                 message = "Operation Failed",
                 success = true,
@@ -39,9 +39,9 @@ namespace TaskAppBackEnd.Service
         }
 
         //400
-        public ReponseModel responseBadRequest()
+        public ResponseModel responseBadRequest()
         {
-            return new ReponseModel
+            return new ResponseModel
             {
                 message = "Undefined",
                 success = false,
@@ -50,9 +50,9 @@ namespace TaskAppBackEnd.Service
             };
         }
 
-        public ReponseModel responseRequired()
+        public ResponseModel responseRequired()
         {
-            return new ReponseModel
+            return new ResponseModel
             {
                 message = "Email and password are required.",
                 success = false,

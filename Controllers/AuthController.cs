@@ -27,7 +27,7 @@ namespace TaskAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ReponseModel result = _authService.RegisterUser(email, pass, user);
+            ResponseModel result = _authService.RegisterUser(email, pass, user);
             return StatusCode(result.statusCode, result);
         }
     }

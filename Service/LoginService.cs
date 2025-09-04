@@ -16,7 +16,7 @@ namespace TaskAppBackEnd.Service
             _context = context;
         }
 
-        public ReponseModel Authenticate(string email, string Password)
+        public ResponseModel Authenticate(string email, string Password)
         {
             string error = string.Empty;
             DateTime time = DateTime.Now;

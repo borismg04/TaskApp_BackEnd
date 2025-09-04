@@ -26,7 +26,7 @@ namespace Models
                 Nombre = "admin",
                 Email = "admin@ad.com",
                 Profile = "SuperAdmin",
-                Password = DecodeFromBase64("YWRtaW5pc3RyYXRvcg==")
+                Password = BCrypt.Net.BCrypt.HashPassword("administrator")
             };
 
             context.Users.Add(user);

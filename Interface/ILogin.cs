@@ -4,6 +4,6 @@ namespace TaskAppBackEnd.Interface
 {
     public interface ILogin
     {
-        ReponseModel Authenticate(string name, string pass);
+        ResponseModel Authenticate(string name, string pass);
     }
 }

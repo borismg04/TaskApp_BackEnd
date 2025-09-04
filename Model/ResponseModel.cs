@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class ReponseModel
+    public class ResponseModel
     {
         public string? message { get; set; }
         public Boolean success { get; set; }
